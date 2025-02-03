@@ -1,0 +1,94 @@
+/*
+Jacque Jigit Fong (c) 2/2/2025
+Program used to find the minimum, max, meanm median, and mode of a list of numbers as decided by the user.
+*/
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+int main() {
+    std:: cout << "Minimum, Maximum, Mean, Median, and Mode Calculator" << std::endl;
+    int user_input = 0;
+    double sum = 0;
+    while (user_input < 1 || user_input > 100) {
+        std:: cout << "\nHow many numbers are in your list (1-100)? ";
+        std:: cin >> user_input;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::cout << "Invalid input. Please enter an integer between 1 and 100.\n";
+        } else if (user_input < 1) {
+            std::cout << "The list must have at least 1 number! Please try again." << std::endl;
+        } else if (user_input > 100) {
+            std::cout << "Please stay within the 100 number limit. Please try again." << std::endl;
+        }
+    } std::vector<int> numbers(user_input);
+    std::cout << "\nYour list may have numbers between 1 and 1000." << std::endl;
+    for (int i = 0; i < user_input; i++) {
+        std::string suffix;
+        int user_number_input = 0;
+        bool user_valid_input = false;
+        switch (i + 1) {
+            case 1: suffix = "st"; break;
+            case 2: suffix = "nd"; break;
+            case 3: suffix = "rd"; break;
+            default: suffix = "th"; break;
+        } while (!user_valid_input) {
+            std::cout << "Enter your " << i + 1 << suffix << " number: ";
+            std::cin >> user_number_input;
+            if (std::cin.fail() || user_number_input < 1 || user_number_input > 1000) {
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                std::cout << "Invalid input. Please enter an integer between 1 and 1000:\n";
+            } else {
+                numbers[i] = user_number_input;
+                user_valid_input = true;
+            }
+        }
+    } std::sort(numbers.begin(), numbers.end());
+    int min = numbers[0];
+    int max = numbers[0];
+    for (int num : numbers) {
+        sum += num;
+        if (num < min) {
+            min = num;
+        } if (num > max) {
+            max = num;
+        }
+    } std::vector<int> counter(max + 1, 0);
+    for (int num : numbers) {
+        counter[num]++;
+    } int mode_counter = 0;
+    std::vector<int> modes;
+    for (int i = 0; i <= max; i++) {
+        if (counter[i] > mode_counter) {
+            mode_counter = counter[i];
+            modes.clear();
+            modes.push_back(i);
+        } else if (counter[i] == mode_counter) {
+            modes.push_back(i);
+        }
+    } int median = numbers[user_input / 2];
+    double mean = sum / user_input;
+    std::cout << "\nThe list of numbers has the following characteristics:" << std::endl;
+    std::cout << "Minimum: " << min << std:: endl;
+    std::cout << "Maximum: " << max << std:: endl;
+    std::cout << "Mean: " << mean << std:: endl;
+    std::cout << "Median: " << median << std:: endl;
+    if (modes.size() > 1) {
+        std::cout << "This list is multimodal. ";
+        std::cout << "There are " << modes.size() << " modes. ";
+        std::cout << "The modes are: ";
+        for (size_t i = 0; i < modes.size(); i++) {
+            if (i == modes.size() - 1 && modes.size() > 1) {
+                std::cout << "and "; 
+            } std::cout << modes[i];
+            if (i != modes.size() - 1 && modes.size() > 1) {
+                std::cout << ", ";
+            }
+        } std::cout << std::endl;
+    } else {
+        std::cout << "The mode is: " << modes[0] << std::endl;
+    }
+    return 0;
+}
