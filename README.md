@@ -1,2 +1,2 @@
 # CPP-Learning-Repository
-Code learned during CIST 004B
+A repository to document my CPP learning journey
